@@ -12,18 +12,7 @@
     $scope.lunchMenu = "";
     $scope.itemArr = [];
     $scope.onCheck = function() {
-      $scope.itemArr = $scope.lunchMenu.split(",");
-      // switch ($scope.itemArr) {
-      //   case 0:
-      //     $scope.message = "Please enter data first";
-      //     break;
-      //   case $scope.itemArr.length <= 3:
-      //     $scope.message = "Enjoy!";
-      //     break;
-      //   case $scope.itemArr.length > 3:
-      //     $scope.message = "Too much!";
-      //     break;
-      // }
+      $scope.itemArr = $scope.lunchMenu.split(",");     
       if ($scope.lunchMenu == "") {
         console.log("if ($scope.itemArr == undefined)");
         $scope.message = "Please enter data first";
