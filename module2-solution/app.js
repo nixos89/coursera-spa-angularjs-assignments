@@ -13,10 +13,7 @@
 
         // removes item from ToBuy list and moves it to Bought list
         $scope.checkOutItem = function(itemIndex) {
-          // console.log("Clicked!");
           try {
-            // console.log("I'm in try...");
-
             ShoppingListCheckOffService.checkOutItem(itemIndex);
           } catch (error) {
             this.errorMessage;
@@ -67,7 +64,6 @@
     ];
 
     self.checkOutItem = function(index) {
-      // console.log("Clicked in service!");
       var item = toBuyList[index];
       aBoughtList.push(item);
       toBuyList.splice(index, 1);
