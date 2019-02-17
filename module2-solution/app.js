@@ -1,69 +1,84 @@
 (function() {
   "use strict";
 
-  var app = angular.module("ShoppingListCheckOff", []);
-  app.controller("ToBuyController", ToBuyController);
-  app.controller("AlreadyBoughtController", AlreadyBoughtController);
-  app.service("ShoppingListCheckOffService", ShoppingListCheckOffService);
+  // probaj resiti SAMO preko service-a, tj. BEZ Config i Provider-a
 
-  ToBuyController.$inject["ToBuyController", "$scope"];
-  AlreadyBoughtController.$inject["AlreadyBoughtController", "$scope"];
+  angular
+    .module("ShoppingListCheckOff", [])
+    .controller("ToBuyController", [
+      "$scope",
+      "ShoppingListCheckOffService",
+      function ToBuyController($scope, ShoppingListCheckOffService) {
+        this.tbItems = ShoppingListCheckOffService.getToBuyList();
 
-  function ToBuyController(ShoppingListCheckOffService) {
-    var tbItems = [];
-    $scope.tbItems = ShoppingListCheckOffService.setToBuyList();
+        // removes item from ToBuy list and moves it to Bought list
+        $scope.checkOutItem = function(itemIndex) {
+          // console.log("Clicked!");
+          try {
+            // console.log("I'm in try...");
 
-    // removes item from ToBuy list and moves it to Bought list
-    // $scope.checkOut = 
-  }
+            ShoppingListCheckOffService.checkOutItem(itemIndex);
+          } catch (error) {
+            this.errorMessage;
+          }
+        };
+      }
+    ])
+    .controller("AlreadyBoughtController", [
+      "$scope",
+      "ShoppingListCheckOffService",
+      function AlreadyBoughtController($scope, ShoppingListCheckOffService) {
+        try {
+          this.abItems = ShoppingListCheckOffService.getABoughtList();
+        } catch (error) {
+          this.errorMessage = "Nothing bought yet.";
+        }
+      }
+    ])
+    .service("ShoppingListCheckOffService", ShoppingListCheckOffService);
 
-  function AlreadyBoughtController(ShoppingListCheckOffService) {
-    var abItems = [];
-    
-    // MUST implement $watch service to be aware of which items 
-    // have been moved FROM toBuyList TO alreadyBoughtList
-
-
-  }
 
   function ShoppingListCheckOffService() {
     var self = this;
     var toBuyList = [];
-    var boughtList = [];
-    var item = { item: something, quantity: 0};
+    var aBoughtList = [];
 
-    self.setToBuyList = function(){
-      self.toBuyList = {
-          item = {
-            name: Oranges,
-            quantity: 10
-          },
-          item = {
-            name: Bananas,
-            quantity: 4
-          },
-          item = {
-            name: Mangos,
-            quantity: 3
-          },
-          item = {
-            name: Avocados,
-            quantity: 6
-          },
-          item = {
-            name: Pineapple,
-            quantity: 7
-          }
-      };
-    }// setToBuyList    
+    toBuyList = [
+      {
+        name: "Oranges",
+        quantity: 10
+      },
+      {
+        name: "Bannanas",
+        quantity: 4
+      },
+      {
+        name: "Mangos",
+        quantity: 3
+      },
+      {
+        name: "Avocados",
+        quantity: 6
+      },
+      {
+        name: "Pineapple",
+        quantity: 7
+      }
+    ];
 
     self.checkOutItem = function(index) {
-      var item = self.toBuyList.indexOf(index);            
-      self.toBuyList.splice(index, 1);
-      self.boughtList.push(item);    
-    }
+      // console.log("Clicked in service!");
+      var item = toBuyList[index];
+      aBoughtList.push(item);
+      toBuyList.splice(index, 1);
+    };
 
+    self.getABoughtList = function() {
+      return aBoughtList;
+    };
 
-  }// ShoppingListCheckOffService
-
+    self.getToBuyList = function() {
+      return toBuyList;
+    };
+  } // ShoppingListCheckOffService
 })();

@@ -11,32 +11,45 @@
       <h1>Shopping List Check Off</h1>
 
       <div class="row">
-        
+
         <!-- To Buy List -->
-        <div class="col-md-6" ng-controller="ToBuyController as tbCtrl">
-          <h2>To Buy:</h2>
-          <ul>
-            <li ng-repeat="tbCtrl.tbItems">
-              Buy 10 cookies
-              <button class="btn btn-default" ng-click="checkOut($index)">
-                <span class="glyphicon glyphicon-ok"></span> Bought
-              </button>
-            </li>
-          </ul>
-          <div class="emptyMessage">Everything is bought!</div>
+        <div class="col-md-6" ng-model="tbCtrl.tbItems" ng-controller="ToBuyController as tbCtrl">
+          <div >
+            <h2>To Buy:</h2>
+            <ul >
+              <li ng-repeat="item in tbCtrl.tbItems">
+                Buy {{ item.quantity }} of {{ item.name }}
+                <button
+                  class="btn btn-default"
+                  ng-click="checkOutItem($index);"
+                >
+                  <span class="glyphicon glyphicon-ok"></span> Bought
+                </button>
+              </li>
+            </ul>
+
+            <div ng-if="tbCtrl.tbItems.length==0" class="emptyMessage">
+                Everything is bought!
+            </div>
+          </div>
         </div>
 
         <!-- Already Bought List -->
-        <div class="col-md-6" ng-controller="BoughtController as bcCtrl">
+        <div class="col-md-6" ng-model="abCtrl.abItems" ng-controller="AlreadyBoughtController as abCtrl">
+          <div >
           <h2>Already Bought:</h2>
-          <ul>
-            <li ng-repeat="{{}}">Bought 10 cookies</li>
+          <ul >
+            <li ng-repeat="bItem in abCtrl.abItems">
+              Bought {{ bItem.quantity }} of {{ bItem.name }}
+            </li>
           </ul>
-          <div ng-show="{{abItems}}" class="emptyMessage">Nothing bought yet.</div>
+          <div ng-if="abCtrl.abItems.length==0" class="emptyMessage">
+              Nothing bought yet.
+          </div>
         </div>
-
       </div>
     </div>
+    <script src="angular.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
