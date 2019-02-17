@@ -1,8 +1,6 @@
 (function() {
   "use strict";
 
-  // probaj resiti SAMO preko service-a, tj. BEZ Config i Provider-a
-
   angular
     .module("ShoppingListCheckOff", [])
     .controller("ToBuyController", [
